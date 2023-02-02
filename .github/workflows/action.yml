@@ -27,7 +27,7 @@ jobs:
             for file in *;
             do
               echo -e "\e[1;32m${file}\e[0m:";
-              cc $file && ./a.out && rm $_ && sleep 0.25
+              cc $file && ./a.out && rm $_ && sleep 0.25 && echo -e "\n"
             done
             
             cd ..;
