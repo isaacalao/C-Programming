@@ -1,0 +1,33 @@
+name: Action
+on: 
+  push:
+
+jobs:
+
+  run_c_programs:
+    name: run c programs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: C Compiler Check
+        run: cc --version
+
+      # I'll modify this later
+      - name: Compile and Run C Code
+        working-directory: ./source
+        run: |
+          dirs=( . )
+          for dir in $dirs;
+          do
+            cd $dir && ls
+            for file in $dir;
+            do
+              echo -e "\e[0;102m$file\e[0m"
+              [[ $dir -ne 0 ]] && (cc $file && ./a.out; echo -e "\n\n" && sleep 0.5) && break
+            done
+            cd ..;
+          done
+          exit
