@@ -1,13 +1,13 @@
 for dir in *; # ./src
 do
- 
-  # check if the first directory contains a 
-  # .c file, echo that dir name and then add all the .c files to an array
+
+  # check if a chosen directory contains a
+  # .c file, output that directory name and then add all the corresponding .c files to an array
   [[ -z "$(ls $dir | grep ".c")" ]] && continue;
 
   echo -e "\e[4;32m$dir\e[0m\n";
   cd $dir; dir=( *.c );
-  
+
   # echo the name of the .c file, compile, execute, remove, sleep, and repeat
   for file in $dir;
   do
@@ -18,4 +18,4 @@ do
 
   cd ..;
 done
-exit 0 # exit successfully
+exit 0 # success
