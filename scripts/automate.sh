@@ -18,4 +18,4 @@ do
 
   cd ..;
 done
-exit 0 # exit gracefully
+exit 0 # exit successfully
