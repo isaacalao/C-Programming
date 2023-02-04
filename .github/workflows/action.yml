@@ -1,11 +1,12 @@
 name: Action
+
 on: 
   push:
 
 jobs:
 
   run_c_programs:
-    name: run c programs
+    name: Run C Programs
     runs-on: ubuntu-latest
 
     steps:
@@ -15,21 +16,7 @@ jobs:
       - name: C Compiler Check
         run: cc --version
 
-      # I'll modify this later
       - name: Compile and Run C Code
-        working-directory: ./source
+        working-directory: ./src
         run: |
-          for dir in *;
-          do
-           
-            [[ -z "$(ls $dir)" ]] && continue || echo -e "\e[4;32m$dir\e[0m\n" && cd $dir;
-
-            for file in *;
-            do
-              echo -e "\e[1;32m${file}\e[0m:";
-              cc $file && ./a.out && rm $_ && sleep 0.25 && echo -e "\n"
-            done
-            
-            cd ..;
-          done
-          exit
+          bash ../scripts/automate.sh
