@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//CONSTANTS
+//Symbolic Constants
 #define A 232
 #define B 3213
 /**
@@ -96,7 +96,7 @@ int main(void) {
     printf("Euclidean Algorithm (GCD) result: %d\nExtended Euclidean Algorithm (Inverse) result: ", result=ea(A, B));
 
     printf(
-    ( (result=eea(A, B)) != -1 ? "%d" : "No inverse" ), result
+      ( (result=eea(A, B)) != -1 ? "%d" : "No inverse" ), result
     );
  }
 }
