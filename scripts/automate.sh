@@ -11,7 +11,6 @@ do
   # echo the name of the .c file, compile, execute, remove, sleep, and repeat
   for file in *.c;
   do
-    echo "$file"
     echo -e "\e[1;32m${file}\e[0m:";
     # i added an input file so some programs that require input can read from it
     cc $file && ./a.out < "input.txt" && rm $_;
