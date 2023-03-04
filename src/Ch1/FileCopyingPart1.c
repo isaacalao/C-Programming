@@ -9,7 +9,7 @@
 
 int main(void) {
     int c;
-
+    
     //Loop through all the characters
     while ((c = getchar()) != EOF)
       printf("%d", c != EOF);
