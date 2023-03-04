@@ -12,7 +12,7 @@ do
   for file in $dir;
   do
     echo -e "\e[1;32m${file}\e[0m:";
-    cc $file && ./a.out && rm $_;
+    cc $file && ./a.out < "input.txt" && rm $_;
     echo -e "\n"; sleep 0.25;
   done
 
