@@ -3,7 +3,7 @@
  * Author: Isaac Alao
  * Chapter: I
  * Exercise: Verify that the expression getchar() != EOF is 0 or 1
- * Purpose: Reinforce use of getchar() and putchar()
+ * Purpose: Reinforce the use of getchar() and putchar()
  *
  **/
 

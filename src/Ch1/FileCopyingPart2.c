@@ -3,7 +3,7 @@
  * Author: Isaac Alao
  * Chapter: I
  * Exercise: Write a program to print the value of EOF
- * Purpose: Reinforce use of getchar() and putchar()
+ * Purpose: Reinforce the use of getchar() and putchar()
  *
  **/
 
