@@ -1,8 +1,10 @@
+[[ -z "$(pwd | grep "src")" ]] && (echo -e "Wrong directory!\nExiting..."; exit) # check if we are in src
+
 for dir in *; # ./src
 do
 
   # check if a chosen directory contains a
-  # .c file, output that directory name and then add all the corresponding .c files to an array
+  # .c file, echo that directory name or if the directory doesn't contain a .c file then continue on to the next iteration
   [[ -z "$(ls $dir | grep ".c")" ]] && continue;
 
   echo -e "\e[4;32m$dir\e[0m\n";
