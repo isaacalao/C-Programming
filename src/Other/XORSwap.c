@@ -15,10 +15,10 @@ int x = 55, y = 32;
  );
 
  /*
-  It's important to have (x = x ^ y) on the far left so the result of the operation can xor (y = x ^ y) 
+  It's important to have (x ^= y) on the far left so the result of the operation can xor (y ^= x) 
   [which has been successfully swapped] to acquire the former value of y and assign it to x
  */
- x = ((x = x ^ y) ^ (y = x ^ y));
+ x = ((x ^= y) ^ (y ^= x));
 
  printf(
   "After the swap:\n"
