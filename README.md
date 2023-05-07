@@ -1,0 +1,6 @@
+# …
+- TOC
+  - [Ch. I](https://github.com/IsaacAlao/C-Programming/tree/main/src/Ch1)
+  - [Other](https://github.com/IsaacAlao/C-Programming/tree/main/src/Other)
+- TODO 
+  - utlize: `make`, syscalls, …
