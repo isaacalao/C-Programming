@@ -15,7 +15,7 @@ do
   do
     echo -e "\e[1;32m${file}\e[0m:";
     # i added an input file so some programs that require input can read from it
-    cc $file && ./a.out < "input.txt" && rm $_;
+    cc $file && bash geninput | ./a.out && rm $_; #cc $file && ./a.out < input && rm $_;
     echo -e "\n"; sleep 0.25;
   done
   cd ..;
