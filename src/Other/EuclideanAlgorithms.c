@@ -1,4 +1,5 @@
-#include "../lib/lib.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 //Symbolic constants
 #define A 1
