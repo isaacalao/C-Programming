@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "../lib/lib.h"
 /**
  * Author: Isaac Alao
  * Chapter: I
@@ -7,7 +7,7 @@
  *
  **/
  // Print odd & even numbers in descending order.  If a number is odd print 6 characters wide & append a newline.
-int main()
+int main(void)
 {
  int i=33;
  while ((i--) > 1)

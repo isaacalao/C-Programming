@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "../lib/lib.h"
 /**
  * Author: Isaac Alao
  * Chapter: I

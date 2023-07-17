@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "../lib/lib.h"
 
 int main(void) {
  int i = 0;
