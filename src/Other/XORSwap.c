@@ -15,8 +15,8 @@ int x = 55, y = 32;
  );
 
  /*
-  It's important to have (x ^= y) on the far left so the result of the operation can xor (y ^= x) 
-  [which has been successfully swapped] to acquire the former value of y and assign it to x
+  It's important to have (x ^= y) on the far left so the result of the operation can xor (y ^= x)
+  [PEMDAS, in which it successfully swaps] to acquire the former value of y and assign it to x
  */
  x = ((x ^= y) ^ (y ^= x));
 
