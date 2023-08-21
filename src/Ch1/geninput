@@ -1,1 +1,2 @@
-echo {A..Z} | tr " " "\n"
+cat test
+# echo {A..Z} | tr " " "\n"

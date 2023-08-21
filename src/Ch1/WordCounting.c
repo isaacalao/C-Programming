@@ -16,7 +16,7 @@ int main(void) {
   wc, // wc ➞ wordcount
   cc, // cc ➞ charactercount
   state; // state ➞ in/out
- c = lc = wc = cc = 0;
+ c = lc = wc = cc = state = 0;
 
  // EOF is NOT a character
  while((c = getchar()) != EOF) {
