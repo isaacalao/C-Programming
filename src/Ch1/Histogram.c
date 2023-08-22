@@ -17,7 +17,7 @@ int main(void) {
   len, // len ➞ length
   state; // state ➞ in/out
   c = wc = max = len = state = 0;
-
+ 
  while((c = getchar()) != EOF) {
   
   /*
@@ -34,15 +34,20 @@ int main(void) {
   );
   
   len += state;
-
+  
+  // Once state is longer in a word, print the length of the word in histogram fmt
   if (!state && len > 0) {
-   max = (max < len) ? (len+1) : max;
-   printf((wc/10 < 1) ? "0%d | " : "%d | ", wc);
-   for (int i = 0; i++ < len; printf((i != len) ? "▔▔▔" : "▔▔\n"));
+   max = (max < len) ? (len+1) : max; // calculate the word with the highest length
+   printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // ill explain this later
+   for (int i = 0; i++ < len; printf((i != len) ? "━━━" : "━━\n"));
    len = 0;
   } 
  }
- printf(" ");
- for (int i = 0; i < max; i++)
-   printf((i/10 < 1) ? " 0%d" : " %d", i);
+ 
+ for (int i = 0; i < max*2; i++) {
+   if (i < max) 
+    printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // and this
+   else  
+    printf(((i % max)/10 < 1) ? "  %d" : " %d", i%max); // yup this too...
+ }
 }
