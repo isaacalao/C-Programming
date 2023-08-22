@@ -35,7 +35,7 @@ int main(void) {
   
   len += state;
   
-  // Once state is longer in a word, print the length of the word in histogram fmt
+  // Once no longer in a word, print the length of the word in histogram format
   if (!state && len > 0) {
    max = (max < len) ? (len+1) : max; // calculate the word with the highest length
    printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // ill explain this later
