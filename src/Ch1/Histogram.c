@@ -21,9 +21,9 @@ int main(void) {
  while((c = getchar()) != EOF) {
   
   /*
-    check if a previous character was the last character of a "word"
-    and check if the current character classifies as whitespace,
-    and increment if the expr yields 1
+    check if the previous character was the last character of a "word"
+    and check if the current character is classified as whitespace,
+    then increment if the cond yields 1
   */
 
   wc += (state && (c == ' ' || c == '\n' || c == '\t'));
@@ -37,17 +37,17 @@ int main(void) {
   
   // Once no longer in a word, print the length of the word in histogram format
   if (!state && len > 0) {
-   max = (max < len) ? (len+1) : max; // calculate the word with the highest length
-   printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // ill explain this later
-   for (int i = 0; i++ < len; printf((i != len) ? "━━━" : "━━\n"));
-   len = 0;
+   max = (max < len) ? (len+1) : max; // max: highest length; add 1 to avoid complications below;
+   printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // prints the y axis
+   for (int i = 0; i++ < len; printf((i != len) ? "━━━" : "━━\n")); // plots histogram box (i modulates after cond)
+   len = 0; // set len back to 0 for adjacent word
   } 
  }
  
- for (int i = 0; i < max*2; i++) {
-   if (i < max) 
-    printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // and this
+ for (int i = 0; i < max<<1; i++) { // (max<<1 == max*2 or max+max)
+   if (i < max) // [0, max) up to max but not including max
+    printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // prints the x axis 
    else  
-    printf((i%max < 10) ? "  %d" : " %d", i%max); // yup this too...
+    printf((i%max < 10) ? "  %d" : " %d", i%max); // include double spaces if number < 10 else use single space
  }
 }

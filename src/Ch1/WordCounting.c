@@ -21,9 +21,9 @@ int main(void) {
  // EOF is NOT a character
  while((c = getchar()) != EOF) {
   /*
-    check if a previous character was the last character of a "word"
-    and check if the current character classifies as whitespace,
-    and increment if the expr yields 1
+    check if the previous character was the last character of a "word"
+    and check if the current character is classified as whitespace,
+    then increment if the cond yields 1
   */
 
   wc += (state && (c == ' ' || c == '\n' || c == '\t'));
