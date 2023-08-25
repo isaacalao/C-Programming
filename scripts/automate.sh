@@ -7,7 +7,7 @@ do
   # .c file, echo that directory name or if the directory doesn't contain a .c file then continue on to the next iteration
   [[ -z "$(ls $dir | grep ".c")" ]] && continue;
 
-  printf "\e[4;32m$dir\e[0m\n";
+  printf "\e[4;32m$dir\e[0m\n\n";
   cd $dir;
 
   # echo the name of the .c file, compile, execute, remove, sleep, and repeat
