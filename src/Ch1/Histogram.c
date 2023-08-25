@@ -49,5 +49,5 @@ int main(void) {
     printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // prints the x axis 
    else  
     printf((i%max < 10) ? "  %d" : " %d", i%max); // include double spaces if number < 10 else use single space
- }
+ } printf("\n");
 }
