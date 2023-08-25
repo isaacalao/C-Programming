@@ -48,6 +48,6 @@ int main(void) {
    if (i < max) 
     printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // and this
    else  
-    printf(((i % max)/10 < 1) ? "  %d" : " %d", i%max); // yup this too...
+    printf(((i%max < 10) ? "  %d" : " %d", i%max); // yup this too...
  }
 }
