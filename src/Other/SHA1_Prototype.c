@@ -78,7 +78,7 @@ void sha_1(char *message) {
     
     //printf("%d\n", arr_size);
     // EXTRA PADDING (INCLUDE LENGTH OF MSG TO BIT_ARR AS BITS)
-    for (int i = 0; i < 32; i++) // This was once 8-bits so it was causing problems for the final hash since for some cases the length was >= 256
+    for (int i = 0; i < 32; i++) // This was once 8-bits so it was causing problems for the final hash since for many cases the length in bits was > 255
         bit_arr[arr_size-i-1] = '0' + GETBIT(k, (i)); // 0 or 1
 
 
