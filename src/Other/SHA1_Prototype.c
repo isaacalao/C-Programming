@@ -9,11 +9,15 @@
  * Source: RFC 3174
  * Purpose: Implement SHA-1 algorithm in C to yield a fixed size output of 160-bits.
  * Status: WIP, there's some limitations as to what this program can compute, as of now it supports UTF-8 (Unicode) text.
+ * Note: This implementation is NOT efficient!
  ----------------------------------------------------------------------------------------------------------------------------------
 */
 
 // ROUNDS
 #define ROUNDS 80
+
+// BUF SIZE [1M Bytes or 1MB]
+#define BUF_SIZE 1000000 
 
 // SYM CONST INTERNAL/INITIAL VALUES [see RFC 3174]
 #define H0 0x67452301
@@ -38,20 +42,38 @@ u32 h0 = H0, h1 = H1, h2 = H2, h3 = H3, h4 = H4;
 char word[80][33] = { '\0' };
 
 int main(int argc, char **argv) {
-    char *pangram = "The quick brown fox jumps over the lazy dog";
-    if (argc != 2) {
-        printf("\x1B[31m1 ARG MUST BE PASSED IN!\x1B[0m\nUsing pangram: '%s'!\n", pangram);
-        sha1(pangram);
-    } else {
-        printf("\x1B[32mARG passed!\x1B[0m\n");
+    // char *pangram = "The quick brown fox jumps over the lazy dog";
+    
+    if (argc == 2) {
+        printf("\x1B[32mArg passed!\x1B[0m\n");
         sha1(argv[1]);
+    } else {
+        u32 i=0, c;
+        char *input_msg = malloc((BUF_SIZE)+1);
+        
+        if (input_msg == NULL) {
+         printf("\x1B[31mMalloc was unable to allocate %d bytes!\x1B[0m\n", BUF_SIZE);
+         return 1;
+        }
+
+        while((c = getchar()) != EOF) {
+          if (BUF_SIZE <= i) 
+          {
+           printf("\x1B[31mSTDIN is over %d bytes!\x1B[0m\n", BUF_SIZE);
+           return 1;
+          }
+          input_msg[i++] = (char)(c);
+        }
+        input_msg[i] = '\0';
+        sha1(input_msg); 
+        free(input_msg);
     }
     return 0;
 }
 
 void sha1(char *message) {
     int msg_length = strlen(message);
-    int k = 0, msg_length_bits = msg_length * 8, arr_size = 0;
+    int inc_to_msg_length = 0, msg_length_bits = msg_length * 8, arr_size = 0;
     
     // SIZE CALCULATION
     while (++msg_length_bits % 512 != 448); 
@@ -62,15 +84,12 @@ void sha1(char *message) {
 
     // INITIALIZE BIT ARRAY
     for (int i = 0; i++ < arr_size; bit_arr[i-1] = '0');
-
+    
     for (int i = 0; i < msg_length; i++) {
         u32 ascii = (u32)(*(message+i));
         for (int j = 0; j < 8; j++)
-            bit_arr[k++] = '0' + GETBIT(ascii, (8-j-1)); // 0 OR 1 in Big-Endian Order
-
-        if (i+1 == msg_length)
-            bit_arr[k] = '1'; // APPEND 1 IN ASCII
-    }
+            bit_arr[inc_to_msg_length++] = '0' + GETBIT(ascii, (8-j-1)); // 0 OR 1 in Big-Endian Order
+    } bit_arr[inc_to_msg_length] = '1'; // APPEND 1 IN ASCII
 
     // PADDING
     while (++msg_length_bits % 512 != 448)
@@ -78,7 +97,7 @@ void sha1(char *message) {
     
     // EXTRA PADDING (INCLUDE LENGTH OF MSG TO BIT_ARR AS BITS)
     for (int i = 0; i < 32; i++) // This was once 8-bits so it was causing problems for the final hash since for many cases the length in bits was > 255
-        bit_arr[arr_size-i-1] = '0' + GETBIT(k, (i)); // 0 or 1 in Little-Endian Order
+        bit_arr[arr_size-i-1] = '0' + GETBIT(inc_to_msg_length, (i)); // 0 or 1 in Little-Endian Order
     
     // 80 ROUNDS ON EACH 512-BIT MESSAGE
     for (int i = 0; i < (int)(arr_size / 512); i++) {
@@ -86,7 +105,7 @@ void sha1(char *message) {
         // CHUNK TO WORDS
         chunk_to_words(bit_arr, (i*512), ((i+1) * 512));
         
-	    u32 A = h0;
+        u32 A = h0;
         u32 B = h1;
         u32 C = h2;
         u32 D = h3;
