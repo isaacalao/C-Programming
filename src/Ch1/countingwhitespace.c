@@ -42,5 +42,5 @@ int main(void) {
  wc += ( (lc += (cc > 0)) && state );
 
  // print the number of lines and words
- printf("\tlc:%4d\t\twc:%4d\t\tcc:%4d", lc, wc, cc);
+ printf("\tlc:\t%d\twc:\t%d\tcc:\t%d", lc, wc, cc);
 }
