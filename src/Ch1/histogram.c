@@ -9,7 +9,7 @@
 
 #define IN 1 // inside of a word
 #define OUT 0 // outside of a word
-
+#define STATECOND(c) (c == ' ' || c == '\n' || c == '\t' || c == EOF)
 int main(void) {
   int c, // c ➞ character
   wc, // wc ➞ wordcount
@@ -18,7 +18,7 @@ int main(void) {
   state; // state ➞ in/out
   c = wc = max = len = state = 0;
  
- while((c = getchar()) != EOF) {
+ while((c = getchar()) != EOF || state) {
   
   /*
     check if the previous character was the last character of a "word"
@@ -26,22 +26,18 @@ int main(void) {
     then increment if the cond yields 1
   */
 
-  wc += (state && (c == ' ' || c == '\n' || c == '\t'));
-  
-  state = (
-    (c == ' ' || c == '\n' || c == '\t') ?
-    OUT : IN
-  );
-  
-  len += state;
-  
+  wc += (state && STATECOND(c));
+  len += (state = (STATECOND(c) ? OUT : IN));
+
   // Once no longer in a word, print the length of the word in histogram format
-  if (!state && len > 0) {
+  // includes the very last word of an input stream (if necessary) 
+
+  if (!state && len > 0) { 
    max = (max < len) ? (len+1) : max; // max: highest length; add 1 to avoid complications below;
    printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // prints the y axis
    for (int i = 0; i++ < len; printf((i != len) ? "━━━" : "━━\n")); // plots histogram box (i modulates after cond)
    len = 0; // set len back to 0 for adjacent word
-  } 
+  }  
  }
  
  for (int i = 0; i < max<<1; i++) { // (max<<1 == max*2 or max+max)
