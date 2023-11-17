@@ -9,7 +9,8 @@
 
 #define IN 1 // inside of a word
 #define OUT 0 // outside of a word
-#define STATECOND(c) (c == ' ' || c == '\n' || c == '\t' || c == EOF)
+#define WHITESPACE_OR_EOF(c) (c == ' ' || c == '\n' || c == '\t' || c == EOF)
+
 int main(void) {
   int c, // c ➞ character
   wc, // wc ➞ wordcount
@@ -18,19 +19,17 @@ int main(void) {
   state; // state ➞ in/out
   c = wc = max = len = state = 0;
  
- while((c = getchar()) != EOF || state) {
-  
+ while((c = getchar()) != EOF || state) { // includes the very last word of input stream
   /*
     check if the previous character was the last character of a "word"
     and check if the current character is classified as whitespace,
     then increment if the cond yields 1
   */
 
-  wc += (state && STATECOND(c));
-  len += (state = (STATECOND(c) ? OUT : IN));
+  wc += (state && WHITESPACE_OR_EOF(c));
+  len += (state = (WHITESPACE_OR_EOF(c) ? OUT : IN));
 
   // Once no longer in a word, print the length of the word in histogram format
-  // includes the very last word of an input stream (if necessary) 
 
   if (!state && len > 0) { 
    max = (max < len) ? (len+1) : max; // max: highest length; add 1 to avoid complications below;
