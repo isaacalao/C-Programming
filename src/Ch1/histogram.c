@@ -32,17 +32,16 @@ int main(void) {
   // Once no longer in a word, print the length of the word in histogram format
 
   if (!state && len > 0) { 
-   max = (max < len) ? (len+1) : max; // max: highest length; add 1 to avoid complications below;
+   max = (max <= len) ? (len+1) : max; // max: highest length; add 1 to avoid complications below;
    printf((wc/10 < 1) ? " %d │ " : "%d │ ", wc); // prints the y axis
    for (int i = 0; i++ < len; printf((i != len) ? "━━━" : "━━\n")); // plots histogram box (i modulates after cond)
    len = 0; // set len back to 0 for adjacent word
   }  
  }
- 
- for (int i = 0; i < max<<1; i++) { // (max<<1 == max*2 or max+max)
+ for (int i = 0; i < max<<1; i++, printf((i == max << 1) ? "\n" : "")) { // (max<<1 == max*2 or max+max)
    if (i < max) // [0, max) up to max but not including max
-    printf((i == 1) ? "├────" : (i+1 != max) ? "───" : "────\n " ); // prints the x axis 
-   else  
+    printf((i == 1 && max != 2) ? "├────" : (i == 1) ?  "├────\n" : (i+1 != max) ? "───" : "────\n " ); // prints the x axis 
+   else
     printf((i%max < 10) ? "  %d" : " %d", i%max); // include double spaces if number < 10 else use single space
- } printf("\n");
+ }
 }
