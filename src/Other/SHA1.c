@@ -16,8 +16,8 @@
 // ROUNDS
 #define ROUNDS 80
 
-// BUF SIZE [1M Bytes or 1MB]
-#define BUF_SIZE 1000000 
+// BUF SIZE [10 million bytes or 10MB]
+#define BUF_SIZE 10000000 
 
 // SYM CONST INTERNAL/INITIAL VALUES [see RFC 3174]
 #define H0 0x67452301
@@ -31,11 +31,12 @@
 #define LEFTROT(bitfield, shiftamt) ((bitfield) << shiftamt) | (((bitfield) >> (32 - shiftamt))) // CIRCULAR LEFT SHIFT
 
 // FUNCTION PROTOTYPES
-void sha1(char *message);
+int sha1(char *message);
 void chunk_to_words(char *bit_arr, int start, int end);
 
 // TYPE DEFINITION
 typedef unsigned int u32;
+typedef unsigned long u64;
 
 // GLOBALS
 u32 h0 = H0, h1 = H1, h2 = H2, h3 = H3, h4 = H4;
@@ -43,49 +44,59 @@ char word[80][33] = { '\0' };
 
 int main(int argc, char **argv) {
     // char *pangram = "The quick brown fox jumps over the lazy dog";
+    size_t size = BUF_SIZE + 1;
     
     if (argc == 2) {
         printf("\x1B[32mArg passed!\x1B[0m\n");
         sha1(argv[1]);
     } else {
-        u32 i=0, c;
-        char *input_msg = malloc((BUF_SIZE)+1);
+        u32 i = 0, c;
+        int status = 0;
+        char *input_msg = calloc(size, sizeof(char));
         
         if (input_msg == NULL) {
-         printf("\x1B[31mMalloc was unable to allocate %d bytes!\x1B[0m\n", BUF_SIZE);
+         printf("\x1B[31mMalloc was unable to allocate %lu bytes!\x1B[0m\n", size);
          return 1;
         }
 
         while((c = getchar()) != EOF) {
-          if (BUF_SIZE <= i) 
+          if (size <= i) 
           {
-           printf("\x1B[31mSTDIN is over %d bytes!\x1B[0m\n", BUF_SIZE);
+           printf("\x1B[31mSTDIN is over %lu bytes!\x1B[0m\n", size);
            return 1;
           }
           input_msg[i++] = (char)(c);
         }
         input_msg[i] = '\0';
-        sha1(input_msg); 
+        status = sha1(input_msg); 
         free(input_msg);
+        return status;
     }
-    return 0;
 }
 
-void sha1(char *message) {
-    int msg_length = strlen(message);
-    int inc_to_msg_length = 0, msg_length_bits = msg_length * 8, arr_size = 0;
+int sha1(char *message) {
+    
+    u64 msg_length = strlen(message);
+    u64 inc_to_msg_length = 0, msg_length_bits = msg_length * 8, arr_size = 0;
     
     // SIZE CALCULATION
     while (++msg_length_bits % 512 != 448); 
     
-    char bit_arr[(arr_size=(msg_length_bits+64))+1]; // APPEND 64 SINCE 448 (mod 512) ≡ 64 AND ACCOUNT FOR THE NUL TERM
+    // Using heap instead of stack since in the previous iteration of this program a stack overflow would occur and crash the program since the requested array size was too much for the stack to handle.
+    char *bit_arr = calloc((arr_size=((msg_length_bits+64)))+1, sizeof(char)); // APPEND 64 SINCE 448 (mod 512) ≡ 64 AND ACCOUNT FOR THE NUL TERM
+
+    if (bit_arr == NULL) {
+        printf("\x1B[31mMalloc was unable to allocate %lu bytes!\x1B[0m\n", arr_size+1);
+        return 1;
+    }
+
     msg_length_bits = msg_length * 8; // RESET VALUE
     bit_arr[arr_size] = '\0'; // ADD NUL TERM TO THE END OF THE BIT ARR TO PREVENT UNDEFINED BEHAVIOR
 
     // INITIALIZE BIT ARRAY
-    for (int i = 0; i++ < arr_size; bit_arr[i-1] = '0');
+    for (u64 i = 0; i++ < arr_size; bit_arr[i-1] = '0');
     
-    for (int i = 0; i < msg_length; i++) {
+    for (u64 i = 0; i < msg_length; i++) {
         u32 ascii = (u32)(*(message+i));
         for (int j = 0; j < 8; j++)
             bit_arr[inc_to_msg_length++] = '0' + GETBIT(ascii, (8-j-1)); // 0 OR 1 in Big-Endian Order
@@ -98,7 +109,7 @@ void sha1(char *message) {
     // EXTRA PADDING (INCLUDE LENGTH OF MSG TO BIT_ARR AS BITS)
     for (int i = 0; i < 32; i++) // This was once 8-bits so it was causing problems for the final hash since for many cases the length in bits was > 255
         bit_arr[arr_size-i-1] = '0' + GETBIT(inc_to_msg_length, (i)); // 0 or 1 in Little-Endian Order
-    
+  
     // 80 ROUNDS ON EACH 512-BIT MESSAGE
     for (int i = 0; i < (int)(arr_size / 512); i++) {
 
@@ -141,8 +152,9 @@ void sha1(char *message) {
         h3 = h3 + D;
         h4 = h4 + E;
     }
-   
-    fprintf(stdout, "%08x%08x%08x%08x%08x\n", h0, h1, h2, h3, h4);  
+    fprintf(stdout, "%08x%08x%08x%08x%08x\n", h0, h1, h2, h3, h4); 
+    free(bit_arr);
+    return 0;
 }
 
 void chunk_to_words(char *bit_arr, int start, int end) {
