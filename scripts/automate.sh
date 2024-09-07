@@ -1,4 +1,4 @@
-[[ -z "$(pwd | grep "src")" ]] && (echo -e "Wrong directory!\nExiting..."; exit) # check if we are in src
+[[ -z "$(pwd | grep "src")" ]] && { echo -e "Wrong directory!\nExiting..."; exit } # check if we are in src
 
 for dir in *; # ./src
 do
