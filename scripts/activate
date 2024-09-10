@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ -n "${_PS1}" ]; then
+  echo "Already activated!";
+else
+_PS1="${PS1}"
+PS1="(activated) ${PS1}"
+
+
+touchtemp () {
+[ -z "${1}" ] && return 1
+cat <<EOF > "$(pwd)/${1}.c"
+#include <stdio.h>
+/**
+ * Author: Isaac Alao
+ * Chapter: (e.g., I, II, III, IV) 
+ * Exercise: (e.g., Using read/write syscalls) 
+ * Purpose: (e.g., Enforce the use of read/write syscalls) 
+ **/
+
+int main(void) {
+  puts("${1}");
+  return 0;
+}
+EOF
+
+return 1
+}
+
+
+deactivate() {
+  PS1="${_PS1}";
+  unset _PS1;
+  unset -f touchtemp deactivate;
+  return 0;
+}
+fi
