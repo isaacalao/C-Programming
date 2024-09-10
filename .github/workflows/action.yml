@@ -19,4 +19,4 @@ jobs:
       - name: Compile and Run C Code
         working-directory: ./src
         run: |
-          bash ../scripts/automate.sh
+          bash ../scripts/automate
