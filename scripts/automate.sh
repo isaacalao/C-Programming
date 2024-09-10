@@ -18,6 +18,6 @@ do
     cc "${file}" && bash geninput 2> /dev/null | ./a.out && rm "${_}"; #cc $file && ./a.out < input && rm $_;
     printf "\n"; sleep 0.25;
   done
-  (cd ..);
+  cd ..;
 done
 exit 0 # success
